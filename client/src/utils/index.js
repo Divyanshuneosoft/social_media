@@ -13,7 +13,8 @@ class Utils {
             dispatch({type:successAction,payload:payload?? response.data})
             if(callback)callback(response.data)
         } catch (error) {
-            if(error.response.status === 401 && history) history.push('/login')
+            console.log("🚀 ~ file: index.js ~ line 16 ~ Utils ~ makeAPICall ~ error", error)
+            if(error.response?.status === 401 && history) history.push('/login')
           console.log("🚀 ~ file: index.js ~ line 16 ~ Utils ~ makeAPICall ~ error", error)
           dispatch({type:failAction,payload:error.response?.data})
         }

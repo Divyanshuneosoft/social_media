@@ -9,9 +9,11 @@ class Posts{
   }
   onInit(){
       this.router.post('/add-post',auth.validator,postController.addPost)
+      this.router.post('/edit-post',auth.validator,postController.updatePost)
       this.router.get('/list',auth.validator,postController.getPosts)
       this.router.get('/detail',auth.validator,postController.getPost)
       this.router.get('/like',auth.validator,postController.postLikes)
+      this.router.get('/delete',auth.validator,postController.deletePost)
       this.router.post('/comments/add',auth.validator,postController.addComment)
   }
 }

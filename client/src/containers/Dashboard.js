@@ -18,19 +18,25 @@ const Dashboard = () => {
     }, [token])
     return (
          <>
-            <Link to="/post/add" style={{marginLeft:'80%'}}><i className="fa fa-plus fa-2x" aria-hidden="true"></i>
+            <Link to="/create" style={{marginLeft:'80%'}}><i className="fa fa-plus fa-2x" aria-hidden="true"></i>
          </Link>
-        <Container style={{ display: 'flex', flexDirection: 'row' }}>
+        <Container style={{ display: 'flex', flexDirection: 'column', justifyContent:'space-around',alignItems:'center' }}>
             {getPostObject.data?.data ? getPostObject.data.data.map((post,index) => (
-                <Card style={{ width: '18rem', margin: '0px 10px 0px 10px' }} key={index}>
-                    {post.fileUrl ? <Card.Img variant="top" src={post.fileUrl} style={{ minWidth: '60%' }} /> : ''}
+                <Card style={{ width: '34rem', height:'32rem',marginTop:'10px'}} key={index}>
+                    {post.fileUrl ? <Card.Img variant="top" style={{height:'30%',width:'40%'}} src={post.fileUrl} alt={post.title}/> : ''}
                     <Card.Body>
                         <Card.Title>{post.title}</Card.Title>
-                        <Card.Text>
-                            {post.message}
-                        </Card.Text>
-                        <Button variant="primary" onClick={()=>likePost(post._id,index)} ><i className="fa fa-thumbs-up">{post.likes.length}</i></Button>
+                        {post.tags.slice(0,5).map(tag=>(
+                            <Card.Text>
+                                #{tag}
+                        </Card.Text> 
+                        ))}
                     </Card.Body>
+                    <div style={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'space-around'}}> 
+                    <Button variant="primary" onClick={()=>likePost(post._id,index)} ><i className="fa fa-thumbs-up">{post.likes.length}</i></Button>
+                        <Link to={`/post/${post._id}`} style={{marginLeft:'10%'}}>Details</Link>
+
+                    </div>
                 </Card>
             )) : ''}
 

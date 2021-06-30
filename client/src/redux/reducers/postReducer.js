@@ -8,6 +8,21 @@ const initialValue = {
         isLoading:false,
         error:null,
         data:null
+    },
+    detailPostObject:{
+        isLoading:false,
+        error:null,
+        data:null
+    },
+    editPostObject:{
+        isLoading:false,
+        error:null,
+        data:null
+    },
+    deletePostObject:{
+        isLoading:false,
+        error:null,
+        data:null
     }
 }
 
@@ -122,7 +137,118 @@ const initialValue = {
                             error: null,
                             data: null
                         }
-                    }    
+                    } 
+                    case 'PRE_DETAILPOST':
+                        return {
+                            ...state,
+                            detailPostObject: {
+                                isLoading: true,
+                                error: null,
+                                data: null
+                            }
+                        }
+                    case 'DETAILPOST_SUCCESS':
+                        return {
+                            ...state,
+                            detailPostObject: {
+                                isLoading: false,
+                                error: null,
+                                data: action.payload
+                            }
+                        }
+                    case 'DETAILPOST_FAILED':
+                        return {
+                            ...state,
+                            detailPostObject: {
+                                isLoading: true,
+                                error: action.payload,
+                                data: null
+                            }
+                        }
+                    case 'CLEAR_DETAILPOST_ERROR':
+                        return {
+                            ...state,
+                            detailPostObject: {
+                                isLoading: false,
+                                error: null,
+                                data: null
+                            }
+                        }
+                        case 'PRE_EDITPOST':
+                            return {
+                                ...state,
+                                editPostObject: {
+                                    isLoading: true,
+                                    error: null,
+                                    data: null
+                                }
+                            }
+                        case 'EDITPOST_SUCCESS':
+                            return {
+                                ...state,
+                                editPostObject: {
+                                    isLoading: false,
+                                    error: null,
+                                    data: action.payload
+                                }
+                            }
+                        case 'EDITPOST_FAILED':
+                            return {
+                                ...state,
+                                editPostObject: {
+                                    isLoading: true,
+                                    error: action.payload,
+                                    data: null
+                                }
+                            }
+                        case 'CLEAR_EDITPOST_ERROR':
+                            return {
+                                ...state,
+                                editPostObject: {
+                                    isLoading: false,
+                                    error: null,
+                                    data: null
+                                }
+                            } 
+                            case 'PRE_DELETEPOST':
+                                return {
+                                    ...state,
+                                    deletePostObject: {
+                                        isLoading: true,
+                                        error: null,
+                                        data: null
+                                    }
+                                }
+                            case 'DELETEPOST_SUCCESS':
+                                return {
+                                    ...state,
+                                    deletePostObject: {
+                                        isLoading: false,
+                                        error: null,
+                                        data: action.payload
+                                    }
+                                }
+                            case 'DELETEPOST_FAILED':
+                                return {
+                                    ...state,
+                                    deletePostObject: {
+                                        isLoading: true,
+                                        error: action.payload,
+                                        data: null
+                                    }
+                                }
+                            case 'CLEAR_DELETEPOST_ERROR':
+                                return {
+                                    ...state,
+                                    deletePostObject: {
+                                        isLoading: false,
+                                        error: null,
+                                        data: null
+                                    }
+                                }         
+                                    
+                    
+
             default:
                 return state      
      }

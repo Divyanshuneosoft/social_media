@@ -53,5 +53,57 @@ likePost(token,obj,history,callback){
           await utils.makeAPICall(params)
     }
 }
+detailPost(token,obj,history,callback){
+    return async(dispatch)=>{
+        const params = {
+            url:`http://localhost:5000/api/post/detail?id=${obj._id}`,
+            defaultAction:'PRE_DETAILPOST',
+            successAction:'DETAILPOST_SUCCESS',
+            failAction:'DETAILPOST_FAILED',
+            type:'GET',
+            token,
+            history,
+            dispatch,
+            noToken:false,
+            callback
+         }
+          await utils.makeAPICall(params)
+    }
+}
+editPost(obj,token,history,callback){
+    return async(dispatch)=>{
+        const params = {
+            url:`http://localhost:5000/api/post/edit-post`,
+            defaultAction:'PRE_EDITPOST',
+            successAction:'EDITPOST_SUCCESS',
+            failAction:'EDITPOST_FAILED',
+            type:'POST',
+            token,
+            params:obj,
+            history,
+            dispatch,
+            noToken:false,
+            callback
+         }
+          await utils.makeAPICall(params)
+    }
+}
+deletePost(token,obj,history,callback){
+    return async(dispatch)=>{
+        const params = {
+            url:`http://localhost:5000/api/post/delete?id=${obj._id}`,
+            defaultAction:'PRE_DELETEPOST',
+            successAction:'DELETEPOST_SUCCESS',
+            failAction:'DELETEPOST_FAILED',
+            type:'GET',
+            token,
+            history,
+            dispatch,
+            noToken:false,
+            callback
+        }
+        await utils.makeAPICall(params)
+    }
+}
 }
 export let postAction = new PostAction()

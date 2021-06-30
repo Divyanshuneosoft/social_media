@@ -3,7 +3,7 @@ import { postModel } from "../models/Posts.js"
 class Posts {
     async addPost(req, res) {
         try {
-            var posts = await postModel._model.create({ ...req.body, createdAt: new Date().toISOString(),creator:req.user._id,name:req.user.name })
+            var posts = await postModel._model.create({ ...req.body, createdAt: new Date().toISOString(), creator: req.user._id, name: req.user.name })
         } catch (error) {
             return res.status(503).send({
                 message: "service unavailable"
@@ -17,7 +17,7 @@ class Posts {
     async getPosts(req, res) {
         try {
             const limit = 8;
-            var pageNumber = parseInt(req.query.pageNumber?? 0) * limit;
+            var pageNumber = parseInt(req.query.pageNumber ?? 0) * limit;
             var numberOfPages = await postModel._model.countDocuments({})
             var posts = await postModel._model.find().skip(pageNumber).limit(limit)
         } catch (error) {
@@ -92,10 +92,9 @@ class Posts {
                     message: 'No Post with this id'
                 })
             }
-            post.comments.push({comments:req.body.comments, addedBy: req.user._id })
-            var updatedPost = await postModel._model.findOneAndUpdate({'_id':id},{'$set':{'comments':post.comments}})
+            post.comments.push({ comments: req.body.comments, addedBy: req.user._id })
+            var updatedPost = await postModel._model.findOneAndUpdate({ '_id': id }, { '$set': { 'comments': post.comments } })
         } catch (error) {
-            console.log("🚀 ~ file: Posts.js ~ line 99 ~ Posts ~ addComment ~ error", error)
             return res.status(503).send({
                 message: "service unavailable"
             })
@@ -105,7 +104,7 @@ class Posts {
             updatedPost
         })
     }
-    async updatePost(req,res){
+    async updatePost(req, res) {
         try {
             let updatedPostObject = {};
             const id = req.body.id;
@@ -115,29 +114,33 @@ class Posts {
                     message: 'No Post with this id'
                 })
             }
-            for(let key in post){
-                if(key !== '_id') continue;
+            for (let key in req.body) {
+                if (key === '_id') continue;
                 updatedPostObject[key] = req.body[key]
             }
-            var updatedPost = await postModel._model.findOneAndUpdate({'_id':id},{'$set':updatedPostObject})
+            var updatedPost = await postModel._model.findOneAndUpdate({ '_id': id }, { '$set': updatedPostObject })
         } catch (error) {
             return res.status(503).send({
                 message: "service unavailable"
-            }) 
+            })
         }
         return res.status(200).send({
             message: "post updated successfully",
             updatedPost
         })
     }
-    async deletePost(req,res){
+    async deletePost(req, res) {
         try {
-            
+           var post = await postModel._model.findOneAndDelete({'_id':req.query.id})
         } catch (error) {
             return res.status(503).send({
                 message: "service unavailable"
-            }) 
+            })
         }
+        return res.status(200).send({
+            message:"post deleted successfully",
+            post
+        })
     }
 }
 export let postController = new Posts()

@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Card, Container, Alert } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import {useHistory} from 'react-router-dom'
 import { useAuthContext } from '../hooks/AuthContextProvider';
 import { postAction } from '../redux/actions/postAction';
 import { storageRef } from '../redux/store/firestore';
+import Tags from './Tags';
 
-const AddPost = () => {
-    const { user, token } = useAuthContext()
+const AddPost = (props) => {
+    const { user, token } = useAuthContext();
+    const [type,setType] = useState('Add');
+    const [tags,setTags] = useState(['cool','hard'])
     const initialValue = { title: '', message: '', fileUrl: '', name: '' }
     const [postObject, setPostObject] = useState(initialValue);
     const [disabled, setDisabled] = useState(false)
     const [error, setError] = useState('')
     const dispatch = useDispatch();
+    const { detailPostObject } = useSelector(state => state.postReducer)
     const history = useHistory()
     const changeText = (e) => {
         setPostObject({
@@ -46,27 +50,39 @@ const AddPost = () => {
         })
     }
     const handleSubmit = (e) => {
+        e.preventDefault()
         let objectTosend = {
-            'name':user.name
+            'name':user.name,
+            'tags':tags
         }
         Object.keys(postObject).forEach(key=>postObject[key] && (objectTosend[key] = postObject[key]))
-        e.preventDefault()
-        setPostObject({
-            ...postObject,
-        })
-        dispatch(postAction.addPost(objectTosend, token,history, () => {
+        if(type === "Edit") objectTosend['id'] = props.match.params.id
+        dispatch(postAction[type === "Edit"? 'editPost':'addPost'](objectTosend, token,history, () => {
              setError('')
              setPostObject(initialValue)
              history.push('/')
         }))
     }
+    useEffect(() => {
+        if(props.match.params.id){
+            dispatch(postAction.detailPost(token, { '_id': props.match.params.id }, history))
+            setType('Edit')
+        }
+    }, [props.match.params.id])
+    useEffect(() => {
+        if (detailPostObject.data?.post){
+            setPostObject({...postObject,title:detailPostObject.data?.post.title,message:detailPostObject.data?.post.message})
+            let newTags = [...detailPostObject.data.post.tags.filter(tag=>tags.indexOf(tag) === -1)]
+            setTags([...tags,...newTags])
+        } 
+    }, [detailPostObject.data?.post])
     return (
         <Container>
             <Card>
                 <Card.Body>
-                    <h1 className="large text-primary text-center">Add Post</h1>
+                    <h1 className="large text-primary text-center">{type} Post</h1>
                     {error && <Alert variant="danger">{error}</Alert>}
-                    <form onSubmit={handleSubmit}>
+                    <form>
                         <div className="form-group mb-3">
                             <input type="text" className="form-control" placeholder="Title" name="title" value={postObject.title} onChange={changeText} />
                         </div>
@@ -76,10 +92,12 @@ const AddPost = () => {
                         <div className="form-group mb-3">
                             <input type="file" className="form-control" placeholder="attachment" name="file" value={postObject.file} onChange={fileSelected} />
                         </div>
-
                         <div className="form-group mb-3">
-                            <button type="submit" className="btn btn-primary" disabled={disabled}>
-                                Add Post
+                            <Tags tags={tags} setTags={setTags} />
+                        </div>
+                        <div className="form-group mb-3">
+                            <button type="submit" className="btn btn-primary" disabled={disabled} onClick={handleSubmit}>
+                                {type} Post
                             </button>
                         </div>
                     </form>
