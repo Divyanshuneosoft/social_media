@@ -27,7 +27,7 @@ const DetailPost = (props) => {
     return (
         <Container className="d-flex justify-content-center" style={{ position: 'relative' }}>
             {post ? (
-                <div sstyle={{ position: 'absolute' }}>
+                <div style={{ position: 'absolute' }}>
                     <h1 className="text-primary text-center"> {post.title} </h1>
                     { post.fileUrl ? <img src={post.fileUrl} style={{ height: '15rem' }} alt={post.title} /> : ''}
                     <p>{post.message}</p>
@@ -36,7 +36,8 @@ const DetailPost = (props) => {
                             <p>&nbsp; #{tag} </p>
                         ))}
                     </div>
-                    <h5>Author:&nbsp; {post.name}</h5>
+                    <p><span className="fw-bold"> Author:&nbsp;</span> {post.name}</p>
+                    <p><span className="fw-bold">CreatedAt:&nbsp;</span>{new Date(post.createdAt).toLocaleDateString()}</p>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Link className="btn btn-primary" to={`/edit/${post._id}`}>Edit</Link>
                         <button className="btn btn-danger" onClick={deletePost}>Delete</button>
