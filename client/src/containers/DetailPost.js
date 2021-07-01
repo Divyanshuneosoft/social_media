@@ -36,6 +36,7 @@ const DetailPost = (props) => {
                             <p>&nbsp; #{tag} </p>
                         ))}
                     </div>
+                    <h5>Author:&nbsp; {post.name}</h5>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Link className="btn btn-primary" to={`/edit/${post._id}`}>Edit</Link>
                         <button className="btn btn-danger" onClick={deletePost}>Delete</button>

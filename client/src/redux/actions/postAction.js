@@ -105,5 +105,22 @@ deletePost(token,obj,history,callback){
         await utils.makeAPICall(params)
     }
 }
+getPostBySearch(token,obj,history,callback){
+    return async(dispatch)=>{
+       const params = {
+           url:`http://localhost:5000/api/post/search?name=${obj.name}`,
+           defaultAction:'PRE_GETPOST',
+           successAction:'GETPOST_SUCCESS',
+           failAction:'GETPOST_FAILED',
+           type:'GET',
+           token,
+           history,
+           dispatch,
+           noToken:false,
+           callback
+        }
+         await utils.makeAPICall(params)
+    }
+}
 }
 export let postAction = new PostAction()

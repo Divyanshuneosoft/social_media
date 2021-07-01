@@ -5,6 +5,7 @@ import {BrowserRouter as Router,Route,Switch} from 'react-router-dom'
 import { AuthProvider } from './hooks/AuthContextProvider';
 import Dashboard from './containers/Dashboard';
 import AddPost from './containers/AddPost';
+import {PrivateRoute} from './containers/PrivateRoute'
 import DetailPost from './containers/DetailPost';
 
 function App() {
@@ -14,11 +15,11 @@ function App() {
       <Switch>
       <AuthProvider>
         <Route exact path='/' component={Dashboard} />
-        <Route  path='/post/:id' component={DetailPost} />
+        <PrivateRoute  path='/post/:id' component={DetailPost} />
         <Route path='/login' component={Login} />
         <Route path='/register' component={Register} />
-        <Route path='/create' component={AddPost} />
-        <Route path='/edit/:id' component={AddPost} />
+        <PrivateRoute path='/create' component={AddPost} />
+        <PrivateRoute path='/edit/:id' component={AddPost} />
 
     </AuthProvider>
       </Switch>

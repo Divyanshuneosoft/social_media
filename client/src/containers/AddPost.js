@@ -68,7 +68,7 @@ const AddPost = (props) => {
             dispatch(postAction.detailPost(token, { '_id': props.match.params.id }, history))
             setType('Edit')
         }
-    }, [props.match.params.id])
+    }, [props.match.params.id,token,history])
     useEffect(() => {
         if (detailPostObject.data?.post){
             setPostObject({...postObject,title:detailPostObject.data?.post.title,message:detailPostObject.data?.post.message})
